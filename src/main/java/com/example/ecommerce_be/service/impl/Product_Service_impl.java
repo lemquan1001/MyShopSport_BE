@@ -7,9 +7,11 @@ import com.example.ecommerce_be.entity.Product_T;
 import com.example.ecommerce_be.mapper.Product_Mapper;
 import com.example.ecommerce_be.repositories.Product_Repository;
 import com.example.ecommerce_be.service.Product_Service;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -55,7 +57,39 @@ public class Product_Service_impl implements Product_Service {
         //product.setCategory(productDTO.getCategory());
         product.setPrice(productDTO.getPrice());
         return productMapper.toDto(productRepository.save(product));
+
     }
+
+    @Override
+    public Product_DTO updateProduct(Product_DTO productDTO) {
+        //không dunùng modal
+//        Product_T product = productMapper.toEntity(productDTO);
+//        return productMapper.toDto(productRepository.save(product));
+
+
+        //dùng modal mapper
+        ModelMapper mapper = new ModelMapper();
+        mapper.createTypeMap(Product_DTO.class,Product_T.class)
+                .setProvider(p -> productRepository.findById(productDTO.getId()).orElseThrow(NoResultException::new));
+        Product_T product = mapper.map(productDTO, Product_T.class);
+        return productMapper.toDto(productRepository.save(product));
+
+    }
+
+    public void deleteProductById(Long productId) {
+        // Tìm đối tượng thực thể trong cơ sở dữ liệu
+        Product_T productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new NoResultException("Không tìm thấy sản phẩm với ID: " + productId));
+
+        // Xóa đối tượng thực thể khỏi cơ sở dữ liệu
+        productRepository.delete(productEntity);
+    }
+
+//    @Override
+//    public void deleteProduct(Long id) {
+//
+//        productRepository.deleteProductById(id);
+//    }
 
     /*@Override
     @Transactional

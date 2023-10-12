@@ -14,11 +14,11 @@ public interface Product_Service {
     List<Product_DTO> getProductByName(String productName);
     Product_DTO addNewProduct(Product_DTO productDTO);
 
-    //Product_DTO updateProduct (Product_DTO productDTO);
+    Product_DTO updateProduct (Product_DTO productDTO);
 
     //Product_DTO getProductById(Long id);
 
-    //void deleteProduct(Long id);
+    void deleteProductById(Long id);
 
     //Page<ProductDTO> searchProduct(ProductPayloadSearch payloadSearch, Pageable pageable);
 }

@@ -3,6 +3,7 @@ package com.example.ecommerce_be.repositories;
 import com.example.ecommerce_be.entity.Category;
 import com.example.ecommerce_be.entity.Product_T;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface Product_Repository extends JpaRepository<Product_T, Long> {
+    //void deleteProductById(Long id);
     @Query(value ="SELECT p.* from products p where p.status =1", nativeQuery = true)
     List<Product_T> getAllProduct();
     @Query(value ="SELECT p.* from products p where p.id = ?1 and p.status =1", nativeQuery = true)
@@ -24,9 +26,9 @@ public interface Product_Repository extends JpaRepository<Product_T, Long> {
    // @Query("SELECT p from Product p where p.isActive =1 and p.id = ?1")
     //Optional<Product> getProductById(Long id);
 
-    //@Modifying
-    //@Query(value = "update Product p set p.id = ?1 where p.isActive = 1", nativeQuery = true)
-    //void deleteProductById(Long id);
+//    @Modifying
+//    @Query(value = "update Product p set p.id = ?1 where p.isActive = 1", nativeQuery = true)
+//    void deleteProductById(Long id);
 
     /*@Query(value = "select  p.* from product p \n" +
             "\tleft join color_product cp  on p.id = cp.product_id \n" +
