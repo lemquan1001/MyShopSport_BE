@@ -6,6 +6,7 @@ import com.example.ecommerce_be.dto.Product_DTO;
 import com.example.ecommerce_be.entity.Category;
 import com.example.ecommerce_be.service.Product_Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,13 @@ public class Product_Controller {
     @ResponseBody
     ResponseEntity addNewProduct(@RequestBody Product_DTO productDTO){
         return ResponseEntity.ok(new BaseResponse(productService.addNewProduct(productDTO),"Thêm mới sản phẩm thành công",StatusCode.SUCCESS));
+    }
+
+
+    @PutMapping("/updateProductT")
+    @ResponseBody
+    ResponseEntity updateProduct(@RequestBody Product_DTO productDTO){
+        return ResponseEntity.ok(new BaseResponse(productService.updateProduct(productDTO),"Cập nhật sản phẩm thành công",StatusCode.SUCCESS));
     }
     @GetMapping("/getAllProducts")
     public ResponseEntity getAllProduct() {
@@ -44,21 +52,18 @@ public class Product_Controller {
         return ResponseEntity.ok(new BaseResponse(productService.getListProductByCategory(category),"Thành công",StatusCode.SUCCESS));
     }
 
-    /*@PutMapping("/updateProductT")
-    @ResponseBody
-    ResponseEntity updateProduct(@RequestBody ProductDTO productDTO){
-        return ResponseEntity.ok(new BaseResponse(productService.updateProduct(productDTO),"Cập nhật sản phẩm thành công",StatusCode.SUCCESS));
-    }
+
 
     @DeleteMapping("/deleteProductT/{id}")
     ResponseEntity deleteProduct(@PathVariable(name = "id") Long id){
-        productService.deleteProduct(id);
+        productService.deleteProductById(id);
+        //return new ResponseEntity<>(HttpStatus.OK);
         return  ResponseEntity.ok(new BaseResponse(null,"Xóa sản phẩm thành công",StatusCode.SUCCESS));
     }
 
 
-    @GetMapping("/getByIdT/{id}")
-    ResponseEntity getProductById(@PathVariable(name="id") Long id){
-        return ResponseEntity.ok(new BaseResponse(productService.getProductById(id),"Thành công",StatusCode.SUCCESS));
-    }*/
+//    @GetMapping("/getByIdT/{id}")
+//    ResponseEntity getProductById(@PathVariable(name="id") Long id){
+//        return ResponseEntity.ok(new BaseResponse(productService.getProductById(id),"Thành công",StatusCode.SUCCESS));
+//    }
 }
