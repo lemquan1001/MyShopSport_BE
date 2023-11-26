@@ -1,10 +1,14 @@
 package com.example.ecommerce_be.service.impl;
 
 import com.example.ecommerce_be.base.NotFoundException;
+import com.example.ecommerce_be.dto.ProductDetailsDTO;
 import com.example.ecommerce_be.dto.Product_DTO;
 import com.example.ecommerce_be.entity.Category;
+import com.example.ecommerce_be.entity.ProductDetails;
 import com.example.ecommerce_be.entity.Product_T;
+import com.example.ecommerce_be.mapper.ProductDetailsMapper;
 import com.example.ecommerce_be.mapper.Product_Mapper;
+import com.example.ecommerce_be.repositories.ProductDetailsRepository;
 import com.example.ecommerce_be.repositories.Product_Repository;
 import com.example.ecommerce_be.service.Product_Service;
 import org.modelmapper.ModelMapper;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -20,6 +25,9 @@ public class Product_Service_impl implements Product_Service {
 
     @Autowired
     private Product_Repository productRepository;
+
+    @Autowired
+    private ProductDetailsRepository productDetailsRepository;
 
     @Autowired
     private Product_Mapper productMapper;
@@ -45,18 +53,38 @@ public class Product_Service_impl implements Product_Service {
     }
 
 
+    @Autowired
+    private ProductDetailsMapper productDetailsMapper;
+
     @Override
     @Transactional
     public Product_DTO addNewProduct(Product_DTO productDTO) {
-        Product_T product = productMapper.toEntity(productDTO);
-        product.setProductCode(productDTO.getProductCode());
-        product.setProductName(productDTO.getProductName());
-        product.setDescription(productDTO.getDescription());
-        product.setBrand(productDTO.getBrand());
-        product.setImage(productDTO.getImage());
-        //product.setCategory(productDTO.getCategory());
-        product.setPrice(productDTO.getPrice());
-        return productMapper.toDto(productRepository.save(product));
+        Product_T saveProduct = productMapper.toEntity(productDTO);
+        productRepository.save(saveProduct);
+
+        // Tự động đổ dữ liệu từ Product sang ProductDetail
+        ProductDetailsDTO productDetailsDTO = new ProductDetailsDTO();
+        ProductDetails saveProductDetail = productDetailsMapper.toEntity(productDetailsDTO);
+        saveProductDetail.setImage(productDTO.getImage());
+        saveProductDetail.setQuantify(productDTO.getStatus());
+        saveProductDetail.setProduct(saveProduct);
+
+        // Sinh ra các size
+        List<String> sizes = Arrays.asList("S", "M", "L", "XL","2XL");
+        for (String size : sizes) {
+            ProductDetails sizeEntity = new ProductDetails();
+            sizeEntity.setImage(productDTO.getImage());
+            sizeEntity.setSize(size);
+            sizeEntity.setQuantify(Long.valueOf(1));
+            sizeEntity.setProduct(saveProduct);
+            productDetailsRepository.save(sizeEntity);
+
+        }
+        if (saveProductDetail.getSize() != null) {
+            productDetailsRepository.save(saveProductDetail);
+        }
+        // Trả về entityA đã được lưu
+        return productMapper.toDto(productRepository.save(saveProduct));
 
     }
 
@@ -76,11 +104,14 @@ public class Product_Service_impl implements Product_Service {
 
     }
 
+    @Transactional
     public void deleteProductById(Long productId) {
         // Tìm đối tượng thực thể trong cơ sở dữ liệu
         Product_T productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new NoResultException("Không tìm thấy sản phẩm với ID: " + productId));
 
+        // Xóa các hàng liên kết trong EntityB trước
+        productDetailsRepository.deleteByProduct_Id(productId);
         // Xóa đối tượng thực thể khỏi cơ sở dữ liệu
         productRepository.delete(productEntity);
     }
