@@ -22,6 +22,8 @@ public interface ProductDetailsRepository extends JpaRepository<ProductDetails, 
     List<ProductDetails> getProductDetailById(Product_T product);
 
     void deleteByProduct_Id(Long productId);
+
+    List<ProductDetails> findByProduct_Id(Long productId);
     /*@Modifying
     @Query(value = "update Product p set p.id = ?1 where p.isActive = 1", nativeQuery = true)
     void deleteProductById(Long id);
