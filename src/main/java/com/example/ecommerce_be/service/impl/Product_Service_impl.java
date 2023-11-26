@@ -88,11 +88,8 @@ public class Product_Service_impl implements Product_Service {
 
     }
 
-    @Override
+    @Transactional
     public Product_DTO updateProduct(Product_DTO productDTO) {
-        //không dunùng modal
-//        Product_T product = productMapper.toEntity(productDTO);
-//        return productMapper.toDto(productRepository.save(product));
 
 
         //dùng modal mapper
@@ -100,7 +97,25 @@ public class Product_Service_impl implements Product_Service {
         mapper.createTypeMap(Product_DTO.class,Product_T.class)
                 .setProvider(p -> productRepository.findById(productDTO.getId()).orElseThrow(NoResultException::new));
         Product_T product = mapper.map(productDTO, Product_T.class);
+
+        // Lưu lại thông tin sản phẩm
+        Product_T updatedProduct = productRepository.save(product);
+
+        // Cập nhật thông tin trong ProductDetails
+        updateProductDetailsImage(updatedProduct.getId(), productDTO.getImage());
         return productMapper.toDto(productRepository.save(product));
+
+    }
+
+    private void updateProductDetailsImage(Long productId, String newImage) {
+        // Lấy danh sách ProductDetails dựa trên productId
+        List<ProductDetails> productDetailsList = productDetailsRepository.findByProduct_Id(productId);
+
+        // Cập nhật trường image trong ProductDetails
+        for (ProductDetails productDetails : productDetailsList) {
+            productDetails.setImage(newImage);
+            productDetailsRepository.save(productDetails);
+        }
 
     }
 
