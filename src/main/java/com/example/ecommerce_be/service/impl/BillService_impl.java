@@ -28,13 +28,16 @@ public class BillService_impl implements BillService {
     private BillRepository productRepository;
 
     @Autowired
+    private BillRepository billRepository;
+
+    @Autowired
     private BillMapper billMapper;
 
     //@Autowired
     //private ColorRepository colorRepository;
     @Override
     public List<BillDTO> getListBill() {
-        return billMapper.toDtos(productRepository.getAllBill());
+        return billMapper.toDtos(billRepository.getAllBill());
     }
     @Override
     public List<BillDTO> getBillById(String id){

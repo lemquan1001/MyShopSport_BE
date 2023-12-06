@@ -33,9 +33,15 @@ public class Product_Controller {
     ResponseEntity updateProduct(@RequestBody Product_DTO productDTO){
         return ResponseEntity.ok(new BaseResponse(productService.updateProduct(productDTO),"Cập nhật sản phẩm thành công",StatusCode.SUCCESS));
     }
-    @GetMapping("/getAllProducts")
-    public ResponseEntity getAllProduct() {
+
+    @GetMapping("/getAllProducts") //dùng cho admin
+    public ResponseEntity getAllProductId1() {
         return ResponseEntity.ok(new BaseResponse(productService.getListProducts(),"Thành công", StatusCode.SUCCESS));
+    }
+
+    @GetMapping("/getAllProductsEnable") //dùng cho view
+    public ResponseEntity getAllProduct() {
+        return ResponseEntity.ok(new BaseResponse(productService.getListProductsEnable(),"Thành công", StatusCode.SUCCESS));
     }
     //Tìm bằng mã sản phẩm
     @GetMapping("/getProductById/{id}")
