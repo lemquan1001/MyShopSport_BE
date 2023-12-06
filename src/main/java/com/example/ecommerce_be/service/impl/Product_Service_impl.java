@@ -37,7 +37,11 @@ public class Product_Service_impl implements Product_Service {
     @Override
     public List<Product_DTO> getListProducts() {
         return productMapper.toDtos(productRepository.getAllProduct());
-    }
+    } //dùng cho api admin
+    @Override
+    public List<Product_DTO> getListProductsEnable() {
+        return productMapper.toDtos(productRepository.getAllProductsEnable());
+    } //dùng cho api view
 
     @Override
     public List<Product_DTO> getListProductByCategory(Category category) {

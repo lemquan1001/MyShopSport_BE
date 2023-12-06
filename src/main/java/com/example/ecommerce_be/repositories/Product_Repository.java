@@ -13,8 +13,10 @@ import java.util.Optional;
 @Repository
 public interface Product_Repository extends JpaRepository<Product_T, Long> {
     //void deleteProductById(Long id);
-    @Query(value ="SELECT p.* from products p where p.status =1", nativeQuery = true)
+    @Query(value ="SELECT * from products", nativeQuery = true)
     List<Product_T> getAllProduct();
+    @Query(value ="SELECT p.* from products p where p.status =1", nativeQuery = true)
+    List<Product_T> getAllProductsEnable();
     @Query(value ="SELECT p.* from products p where p.id = ?1 and p.status =1", nativeQuery = true)
     Optional<Product_T> getProduct_ById(Long id);
     @Query(value ="SELECT p.* from products p where p.product_name like %?1% and p.status =1", nativeQuery = true)

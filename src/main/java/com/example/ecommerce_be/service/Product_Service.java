@@ -6,9 +6,8 @@ import com.example.ecommerce_be.entity.Category;
 import java.util.List;
 
 public interface Product_Service {
-
-
     List<Product_DTO> getListProducts();
+    List<Product_DTO> getListProductsEnable();
     List<Product_DTO> getListProductByCategory(Category category);
     Product_DTO getProductById(Long id);
     List<Product_DTO> getProductByName(String productName);
