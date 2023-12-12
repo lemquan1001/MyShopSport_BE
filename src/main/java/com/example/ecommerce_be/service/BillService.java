@@ -10,6 +10,10 @@ public interface BillService {
 
 
     List<BillDTO> getListBill();
+    List<BillDTO> getBillByStatus0();
+    List<BillDTO> getBillByStatus1();
+    List<BillDTO> getBillByStatus2();
+    List<BillDTO> getBillByStatus3();
     BillDTO addNewBill(BillDTO billDTO);
     List<BillDTO> getBillById(String id);
 

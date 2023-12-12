@@ -32,6 +32,26 @@ public class BillController {
     public ResponseEntity getAllBill() {
         return ResponseEntity.ok(new BaseResponse(billService.getListBill(),"Thành công", StatusCode.SUCCESS));
     }
+
+    @GetMapping("/getBillStt0")
+    public ResponseEntity getBillStatus0() {
+        return ResponseEntity.ok(new BaseResponse(billService.getBillByStatus0(),"Thành công", StatusCode.SUCCESS));
+    }
+
+    @GetMapping("/getBillStt1")
+    public ResponseEntity getBillStatus1() {
+        return ResponseEntity.ok(new BaseResponse(billService.getBillByStatus1(),"Thành công", StatusCode.SUCCESS));
+    }
+
+    @GetMapping("/getBillStt2")
+    public ResponseEntity getBillStatus2() {
+        return ResponseEntity.ok(new BaseResponse(billService.getBillByStatus2(),"Thành công", StatusCode.SUCCESS));
+    }
+    @GetMapping("/getBillStt3")
+    public ResponseEntity getBillStatus3() {
+        return ResponseEntity.ok(new BaseResponse(billService.getBillByStatus3(),"Thành công", StatusCode.SUCCESS));
+    }
+
     @PostMapping("/addBill")
     @ResponseBody
     ResponseEntity addNewBill(@RequestBody BillDTO billDTO){

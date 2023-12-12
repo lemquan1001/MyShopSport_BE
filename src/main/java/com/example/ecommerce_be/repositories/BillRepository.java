@@ -16,6 +16,18 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> getAllBill();
     @Query(value ="SELECT p.* from bill p where p.email = ?1 ", nativeQuery = true)
     List<Bill> getBillById(String id);
+
+    @Query(value ="SELECT b.* from bill b where b.status = 0 ", nativeQuery = true)
+    List<Bill> getBillByStatus0();
+
+    @Query(value ="SELECT b.* from bill b where b.status = 1 ", nativeQuery = true)
+    List<Bill> getBillByStatus1();
+
+    @Query(value ="SELECT b.* from bill b where b.status = 2 ", nativeQuery = true)
+    List<Bill> getBillByStatus2();
+
+    @Query(value ="SELECT b.* from bill b where b.status = 3 ", nativeQuery = true)
+    List<Bill> getBillByStatus3();
 //    @Query(value ="SELECT p.* from products p where p.id = ?1", nativeQuery = true)
 //    Optional<Product_T> getProduct_ById(Long id);
 //    @Query(value ="SELECT p.* from products p where p.product_name like %?1%", nativeQuery = true)

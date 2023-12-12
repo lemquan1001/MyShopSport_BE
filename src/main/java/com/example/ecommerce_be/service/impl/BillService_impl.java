@@ -45,6 +45,26 @@ public class BillService_impl implements BillService {
     }
 
     @Override
+    public List<BillDTO> getBillByStatus0(){
+        return billMapper.toDtos(productRepository.getBillByStatus0());
+    }
+
+    @Override
+    public List<BillDTO> getBillByStatus1(){
+        return billMapper.toDtos(productRepository.getBillByStatus1());
+    }
+
+    @Override
+    public List<BillDTO> getBillByStatus2(){
+        return billMapper.toDtos(productRepository.getBillByStatus2());
+    }
+
+    @Override
+    public List<BillDTO> getBillByStatus3(){
+        return billMapper.toDtos(productRepository.getBillByStatus3());
+    }
+
+    @Override
     @Transactional
     public BillDTO addNewBill(BillDTO billDTO) {
         Bill bill = billMapper.toEntity(billDTO);
