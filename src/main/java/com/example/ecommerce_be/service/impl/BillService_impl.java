@@ -1,13 +1,11 @@
 package com.example.ecommerce_be.service.impl;
 
 import com.example.ecommerce_be.base.NotFoundException;
+import com.example.ecommerce_be.dto.AccountDTO;
 import com.example.ecommerce_be.dto.BillDTO;
 import com.example.ecommerce_be.dto.CustomerDTO;
 import com.example.ecommerce_be.dto.Product_DTO;
-import com.example.ecommerce_be.entity.Bill;
-import com.example.ecommerce_be.entity.Category;
-import com.example.ecommerce_be.entity.Customer;
-import com.example.ecommerce_be.entity.Product_T;
+import com.example.ecommerce_be.entity.*;
 import com.example.ecommerce_be.exception.UserAlreadyExistException;
 import com.example.ecommerce_be.mapper.BillMapper;
 import com.example.ecommerce_be.mapper.Product_Mapper;
@@ -45,8 +43,8 @@ public class BillService_impl implements BillService {
         return billMapper.toDtos(billRepository.getAllBill());
     }
     @Override
-    public List<BillDTO> getBillById(String id){
-        return billMapper.toDtos(productRepository.getBillById(id));
+    public List<BillDTO> getBillByEmail(String id){
+        return billMapper.toDtos(productRepository.getBillByEmail(id));
     }
 
     @Override
@@ -94,15 +92,17 @@ public class BillService_impl implements BillService {
 
     @Transactional
     public BillDTO updateBill(BillDTO billDTO) {
-
-
-        //dùng modal mapper
+        // dùng modal mapper
         ModelMapper mapper = new ModelMapper();
-        mapper.createTypeMap(BillDTO.class,Bill.class)
+        mapper.createTypeMap(BillDTO.class, Bill.class)
                 .setProvider(p -> billRepository.findById(billDTO.getId()).orElseThrow(NoResultException::new));
         Bill bill = mapper.map(billDTO, Bill.class);
 
-        return billMapper.toDto(billRepository.save(bill));
+        // Lưu lại thông tin sản phẩm
+        Bill updatedABill = billRepository.save(bill);
+
+        return billMapper.toDto(billRepository.save(updatedABill));
+
     }
 
 

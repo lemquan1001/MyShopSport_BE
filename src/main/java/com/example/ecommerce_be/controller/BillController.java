@@ -2,6 +2,7 @@ package com.example.ecommerce_be.controller;
 
 import com.example.ecommerce_be.base.BaseResponse;
 import com.example.ecommerce_be.constants.StatusCode;
+import com.example.ecommerce_be.dto.AccountDTO;
 import com.example.ecommerce_be.dto.BillDTO;
 import com.example.ecommerce_be.dto.CustomerDTO;
 import com.example.ecommerce_be.dto.Product_DTO;
@@ -64,14 +65,15 @@ public class BillController {
         return ResponseEntity.ok(new BaseResponse(billService.addNewBill(billDTO),"Thêm mới sản phẩm thành công",StatusCode.SUCCESS));
     }
 
+
     @PutMapping("/updateBill")
     @ResponseBody
     ResponseEntity updateBill(@RequestBody BillDTO billDTO){
-        return ResponseEntity.ok(new BaseResponse(billService.updateBill(billDTO),"Cập nhật thoong tin bill thành công",StatusCode.SUCCESS));
+        return ResponseEntity.ok(new BaseResponse(billService.updateBill(billDTO),"Cập nhật khách hàng thành công",StatusCode.SUCCESS));
     }
     @GetMapping("/getBillById/{id}")
     ResponseEntity getBilltById(@PathVariable(name="id") String id){
-        return ResponseEntity.ok(new BaseResponse(billService.getBillById(id),"Thành công",StatusCode.SUCCESS));
+        return ResponseEntity.ok(new BaseResponse(billService.getBillByEmail(id),"Thành công",StatusCode.SUCCESS));
     }
 
     @GetMapping("/getInforById/{id}")
