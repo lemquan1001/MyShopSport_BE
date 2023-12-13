@@ -5,10 +5,13 @@ import com.example.ecommerce_be.constants.StatusCode;
 import com.example.ecommerce_be.dto.BillDTO;
 import com.example.ecommerce_be.dto.CustomerDTO;
 import com.example.ecommerce_be.dto.Product_DTO;
+import com.example.ecommerce_be.entity.Bill;
 import com.example.ecommerce_be.entity.Category;
 import com.example.ecommerce_be.service.BillService;
 import com.example.ecommerce_be.service.Product_Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 public class BillController {
     @Autowired
     private BillService billService;
+
+    @RequestMapping(value = "/updateBill",method = RequestMethod.PUT,consumes =MediaType.APPLICATION_JSON_VALUE ,
+            headers = MediaType.APPLICATION_JSON_VALUE)
 
    /* @PostMapping("/searchT")
     public  ResponseEntity searchProduct(@RequestBody ProductPayloadSearch payloadSearch, Pageable pageable){
@@ -57,9 +63,24 @@ public class BillController {
     ResponseEntity addNewBill(@RequestBody BillDTO billDTO){
         return ResponseEntity.ok(new BaseResponse(billService.addNewBill(billDTO),"Thêm mới sản phẩm thành công",StatusCode.SUCCESS));
     }
+
+    @PutMapping("/updateBill")
+    @ResponseBody
+    ResponseEntity updateBill(@RequestBody BillDTO billDTO){
+        return ResponseEntity.ok(new BaseResponse(billService.updateBill(billDTO),"Cập nhật thoong tin bill thành công",StatusCode.SUCCESS));
+    }
     @GetMapping("/getBillById/{id}")
     ResponseEntity getBilltById(@PathVariable(name="id") String id){
         return ResponseEntity.ok(new BaseResponse(billService.getBillById(id),"Thành công",StatusCode.SUCCESS));
     }
+
+    @GetMapping("/getInforById/{id}")
+    ResponseEntity getInforById(@PathVariable(name="id") Long id){
+        return ResponseEntity.ok(new BaseResponse(billService.getInforById(id),"Thành công",StatusCode.SUCCESS));
+    }
+//    public ResponseEntity<Bill> getInforById(@PathVariable("id") Long id){
+//        Bill bill = billService.getInforById(id);
+//        return  new ResponseEntity<>(bill, HttpStatus.OK);
+//    }
 
 }

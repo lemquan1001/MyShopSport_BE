@@ -17,4 +17,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findByUsername(String user);
     @Query(value ="SELECT p.* from account p where p.user = ?1 ", nativeQuery = true)
     Optional<Account> getAccountByUser(String id);
+
+    @Query(value ="SELECT p.* from account p", nativeQuery = true)
+    List<Account> getAllAccount();
 }

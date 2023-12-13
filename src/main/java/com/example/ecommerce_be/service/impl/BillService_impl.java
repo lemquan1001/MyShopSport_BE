@@ -8,18 +8,23 @@ import com.example.ecommerce_be.entity.Bill;
 import com.example.ecommerce_be.entity.Category;
 import com.example.ecommerce_be.entity.Customer;
 import com.example.ecommerce_be.entity.Product_T;
+import com.example.ecommerce_be.exception.UserAlreadyExistException;
 import com.example.ecommerce_be.mapper.BillMapper;
 import com.example.ecommerce_be.mapper.Product_Mapper;
 import com.example.ecommerce_be.repositories.BillRepository;
 import com.example.ecommerce_be.repositories.Product_Repository;
 import com.example.ecommerce_be.service.BillService;
 import com.example.ecommerce_be.service.Product_Service;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BillService_impl implements BillService {
@@ -65,6 +70,13 @@ public class BillService_impl implements BillService {
     }
 
     @Override
+    public List<BillDTO> getInforById(Long id){
+        return billMapper.toDtos(productRepository.getInfoProOfCusById(id));
+//        return (Bill) billRepository.getInfoProOfCusById(id).orElseThrow(() -> new UserAlreadyExistException("SUCCESS"));
+
+    }
+
+    @Override
     @Transactional
     public BillDTO addNewBill(BillDTO billDTO) {
         Bill bill = billMapper.toEntity(billDTO);
@@ -78,6 +90,19 @@ public class BillService_impl implements BillService {
         bill.setPayMethod(billDTO.getPayMethod());
         bill.setCreatedDate(new Date());
         return billMapper.toDto(productRepository.save(bill));
+    }
+
+    @Transactional
+    public BillDTO updateBill(BillDTO billDTO) {
+
+
+        //dùng modal mapper
+        ModelMapper mapper = new ModelMapper();
+        mapper.createTypeMap(BillDTO.class,Bill.class)
+                .setProvider(p -> billRepository.findById(billDTO.getId()).orElseThrow(NoResultException::new));
+        Bill bill = mapper.map(billDTO, Bill.class);
+
+        return billMapper.toDto(billRepository.save(bill));
     }
 
 

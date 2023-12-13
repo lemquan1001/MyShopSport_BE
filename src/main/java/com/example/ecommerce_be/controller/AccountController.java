@@ -26,6 +26,21 @@ public class AccountController {
     ResponseEntity addNewAccount(@RequestBody AccountDTO accountDTO){
         return ResponseEntity.ok(new BaseResponse(accountService.addNewAccount(accountDTO),"Thêm mới sản phẩm thành công",StatusCode.SUCCESS));
     }
+
+
+    @PutMapping("/updateAccount")
+    @ResponseBody
+    ResponseEntity updateAccount(@RequestBody AccountDTO accountDTO){
+        return ResponseEntity.ok(new BaseResponse(accountService.updateAccount(accountDTO),"Cập nhật khách hàng thành công",StatusCode.SUCCESS));
+    }
+
+
+
+    @DeleteMapping("/deleteAccount/{id}")
+    ResponseEntity deleteAccount(@PathVariable(name = "id") Long id){
+        accountService.deleteAccountById(id);
+        return  ResponseEntity.ok(new BaseResponse(null,"Xóa tài khoản thành công",StatusCode.SUCCESS));
+    }
     @GetMapping("/getAllAccout")
     public ResponseEntity getAllAccount() {
         return ResponseEntity.ok(new BaseResponse(accountService.getListAccount(),"Thành công", StatusCode.SUCCESS));

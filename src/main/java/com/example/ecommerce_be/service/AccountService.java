@@ -11,6 +11,9 @@ public interface AccountService {
 
     List<AccountDTO> getListAccount();
     AccountDTO addNewAccount(AccountDTO accountDTO);
+    public AccountDTO updateAccount(AccountDTO accountDTO);
+
+    public void deleteAccountById(Long id);
     AccountDTO getAccountByUser(String id);
     boolean checkLogin(String username, String password);
     //Product_DTO updateProduct (Product_DTO productDTO);
