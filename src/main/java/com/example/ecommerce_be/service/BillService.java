@@ -16,7 +16,7 @@ public interface BillService {
     List<BillDTO> getBillByStatus2();
     List<BillDTO> getBillByStatus3();
     BillDTO addNewBill(BillDTO billDTO);
-    List<BillDTO> getBillById(String id);
+    List<BillDTO> getBillByEmail(String id);
     public List<BillDTO> getInforById(Long id);
     public BillDTO updateBill(BillDTO billDTO);
 

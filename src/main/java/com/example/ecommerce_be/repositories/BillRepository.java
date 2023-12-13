@@ -11,8 +11,8 @@ import java.util.List;
 public interface BillRepository extends JpaRepository<Bill, Long> {
     @Query(value ="SELECT p.* from bill p where p.status=0", nativeQuery = true)
     List<Bill> getAllBill();
-    @Query(value ="SELECT p.* from bill p where p.id = :id ", nativeQuery = true)
-    List<Bill> getBillById(String id);
+    @Query(value ="SELECT p.* from bill p where p.email = ?1 ", nativeQuery = true)
+    List<Bill> getBillByEmail(String id);
 
     @Query(value ="SELECT b.* from bill b where b.status = 0 ", nativeQuery = true)
     List<Bill> getBillByStatus0();
