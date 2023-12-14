@@ -27,8 +27,6 @@ import java.util.Optional;
 @Service
 public class BillService_impl implements BillService {
 
-    @Autowired
-    private BillRepository productRepository;
 
     @Autowired
     private BillRepository billRepository;
@@ -44,32 +42,32 @@ public class BillService_impl implements BillService {
     }
     @Override
     public List<BillDTO> getBillByEmail(String id){
-        return billMapper.toDtos(productRepository.getBillByEmail(id));
+        return billMapper.toDtos(billRepository.getBillByEmail(id));
     }
 
     @Override
     public List<BillDTO> getBillByStatus0(){
-        return billMapper.toDtos(productRepository.getBillByStatus0());
+        return billMapper.toDtos(billRepository.getBillByStatus0());
     }
 
     @Override
     public List<BillDTO> getBillByStatus1(){
-        return billMapper.toDtos(productRepository.getBillByStatus1());
+        return billMapper.toDtos(billRepository.getBillByStatus1());
     }
 
     @Override
     public List<BillDTO> getBillByStatus2(){
-        return billMapper.toDtos(productRepository.getBillByStatus2());
+        return billMapper.toDtos(billRepository.getBillByStatus2());
     }
 
     @Override
     public List<BillDTO> getBillByStatus3(){
-        return billMapper.toDtos(productRepository.getBillByStatus3());
+        return billMapper.toDtos(billRepository.getBillByStatus3());
     }
 
     @Override
     public List<BillDTO> getInforById(Long id){
-        return billMapper.toDtos(productRepository.getInfoProOfCusById(id));
+        return billMapper.toDtos(billRepository.getInfoProOfCusById(id));
 //        return (Bill) billRepository.getInfoProOfCusById(id).orElseThrow(() -> new UserAlreadyExistException("SUCCESS"));
 
     }
@@ -87,7 +85,7 @@ public class BillService_impl implements BillService {
         bill.setNote(billDTO.getNote());
         bill.setPayMethod(billDTO.getPayMethod());
         bill.setCreatedDate(new Date());
-        return billMapper.toDto(productRepository.save(bill));
+        return billMapper.toDto(billRepository.save(bill));
     }
 
     @Transactional
