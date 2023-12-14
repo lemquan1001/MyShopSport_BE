@@ -5,9 +5,13 @@ import com.example.ecommerce_be.constants.Constants;
 import com.example.ecommerce_be.dto.AccountDTO;
 import com.example.ecommerce_be.dto.Product_DTO;
 import com.example.ecommerce_be.entity.Account;
+import com.example.ecommerce_be.entity.Bill;
+import com.example.ecommerce_be.entity.BillDetail;
 import com.example.ecommerce_be.exception.UserAlreadyExistException;
 import com.example.ecommerce_be.mapper.AccoutMapper;
 import com.example.ecommerce_be.repositories.AccountRepository;
+import com.example.ecommerce_be.repositories.BillDetailRepository;
+import com.example.ecommerce_be.repositories.BillRepository;
 import com.example.ecommerce_be.service.AccountService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +21,19 @@ import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountService_impl implements AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private BillRepository billRepository;
+
+    @Autowired
+    private BillDetailRepository billDetailRepository;
 
     @Autowired
     private AccoutMapper accoutMapper;
@@ -76,14 +87,42 @@ public class AccountService_impl implements AccountService {
 
 
 
+//    @Transactional
+//    public void deleteAccountById(Long id) {
+//        // Tìm đối tượng thực thể trong cơ sở dữ liệu
+//        Account account = accountRepository.findById(id)
+//                .orElseThrow(() -> new NoResultException("Không tìm tài khoản phẩm với ID: " + id));
+//        // Xóa đối tượng thực thể khỏi cơ sở dữ liệu
+//        accountRepository.delete(account);
+//    }
+
+
+
+    //cái này xóa đc 1 bảng
     @Transactional
     public void deleteAccountById(Long id) {
         // Tìm đối tượng thực thể trong cơ sở dữ liệu
         Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new NoResultException("Không tìm tài khoản phẩm với ID: " + id));
-        // Xóa đối tượng thực thể khỏi cơ sở dữ liệu
+                .orElseThrow(() -> new NoResultException("Không tìm tài khoản với ID: " + id));
+
+        // Lấy thông tin email của tài khoản sắp bị xóa
+        String emailToDelete = account.getEmail();
+
+        // Xóa dữ liệu từ bảng Bill liên quan
+        List<Bill> billsToDelete = billRepository.getBillByEmail(emailToDelete);
+        billRepository.deleteAll(billsToDelete);
+
+        // Xóa dữ liệu từ bảng BillDetail liên quan
+        for (Bill bill : billsToDelete) {
+            List<BillDetail> billDetailsToDelete = billDetailRepository.findByBillID(bill.getId());
+            billDetailRepository.deleteAll(billDetailsToDelete);
+        }
+
+        // Xóa tài khoản
         accountRepository.delete(account);
     }
+
+
 
     public boolean checkLogin(String user, String pass) {
         Account account = accountRepository.findByUsername(user);
