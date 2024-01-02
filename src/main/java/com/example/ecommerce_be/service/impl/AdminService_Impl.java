@@ -1,5 +1,7 @@
 package com.example.ecommerce_be.service.impl;
 
+import com.example.ecommerce_be.base.NotFoundException;
+import com.example.ecommerce_be.dto.AccountDTO;
 import com.example.ecommerce_be.dto.AdminDTO;
 import com.example.ecommerce_be.dto.CredentialsDto;
 import com.example.ecommerce_be.dto.SignUpDto;
@@ -83,6 +85,10 @@ public class AdminService_Impl implements AdminService {
         }
     }
 
+    @Override
+    public AdminDTO getAccountByAdmin(String id){
+        return userMapper.toUserDto(userRepository.getAccountByUser(id).orElseThrow(() -> new NotFoundException("Product by id" + id + "not found")));
+    }
     private void sendConfirmationEmail(String email) {
         String confirmationLink = "http://localhost:8080/confirm?email=" + email; // Thay đổi URL của ứng dụng của bạn
         String emailContent = "Please click the link below to confirm your email:\n" + confirmationLink;

@@ -1,5 +1,6 @@
 package com.example.ecommerce_be.service;
 
+import com.example.ecommerce_be.dto.AccountDTO;
 import com.example.ecommerce_be.dto.AdminDTO;
 import com.example.ecommerce_be.dto.CredentialsDto;
 import com.example.ecommerce_be.dto.SignUpDto;
@@ -11,4 +12,5 @@ public interface AdminService {
 
     public void confirmEmail(String email);
     public AdminDTO findByLogin(String login);
+    public AdminDTO getAccountByAdmin(String id);
 }
