@@ -25,10 +25,13 @@ public class SecurityConfig {
       .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//bộ lọc cow bản
             .authorizeRequests(authorizeRequests ->
                     authorizeRequests
-                            .antMatchers(HttpMethod.POST, "/login", "/register").permitAll()
-                            .antMatchers("/confirm").permitAll()
-//                            .antMatchers("/api/**").authenticated()
-//                            .antMatchers("/teacher/**").authenticated()
+                            .antMatchers(HttpMethod.POST, "/login", "/register","/forgot-password").permitAll()
+                            .antMatchers("/confirm","/getAccountByAdmin/**").permitAll()
+                            .antMatchers("/api/**").permitAll()
+//                            .antMatchers("/api/productT/**").authenticated()
+                            .antMatchers("/logout").authenticated()
+//                            .antMatchers("/api/bill/**").authenticated()
+//                            .antMatchers("/api/category/**").authenticated()
 //                            .antMatchers("/course/**").authenticated()
 //                            .antMatchers("/lesson/**").authenticated()
 //                            .antMatchers("/comment/**").authenticated()
