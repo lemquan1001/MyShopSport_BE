@@ -14,4 +14,5 @@ public class AdminDTO {
     private  String username;
     private  String login;
     private  String token;
+    private Long enable;
 }

@@ -12,5 +12,7 @@ public interface AdminService {
 
     public void confirmEmail(String email);
     public AdminDTO findByLogin(String login);
+    public AdminDTO updateAdmin(AdminDTO adminDTO);
+    public void deleteAdminById(Long id);
     public AdminDTO getAccountByAdmin(String id);
 }
