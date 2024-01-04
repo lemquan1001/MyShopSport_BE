@@ -1,21 +1,23 @@
 package com.example.ecommerce_be.service.impl;
 
 import com.example.ecommerce_be.base.NotFoundException;
-import com.example.ecommerce_be.dto.AccountDTO;
-import com.example.ecommerce_be.dto.AdminDTO;
-import com.example.ecommerce_be.dto.CredentialsDto;
-import com.example.ecommerce_be.dto.SignUpDto;
+import com.example.ecommerce_be.dto.*;
 import com.example.ecommerce_be.entity.Admin;
+import com.example.ecommerce_be.entity.Bill;
+import com.example.ecommerce_be.entity.Product_T;
 import com.example.ecommerce_be.jwt.email.EmailSender;
 import com.example.ecommerce_be.jwt.exceptions.AppException;
 import com.example.ecommerce_be.mapper.AdminMapper;
 import com.example.ecommerce_be.repositories.AdminRepository;
 import com.example.ecommerce_be.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import java.nio.CharBuffer;
 import java.util.Optional;
 
@@ -84,6 +86,38 @@ public class AdminService_Impl implements AdminService {
             return userMapper.toUserDto(savedUser);
         }
     }
+
+    @Transactional
+    public AdminDTO updateAdmin(AdminDTO adminDTO) {
+        // Validate if the ID and enable are provided
+        if (adminDTO.getId() == null || adminDTO.getEnable() == null) {
+            throw new AppException("Admin ID and enable status are required for updating", HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if the admin with the given ID exists
+        Admin existingAdmin = userRepository.findById(adminDTO.getId())
+                .orElseThrow(() -> new NotFoundException("Admin not found for ID: " + adminDTO.getId()));
+
+        // Update only the enable status
+        existingAdmin.setEnable(adminDTO.getEnable());
+
+        // Save the updated admin
+        Admin updatedAdmin = userRepository.save(existingAdmin);
+
+        return userMapper.toUserDto(updatedAdmin);
+    }
+
+    @Transactional
+    public void deleteAdminById(Long id) {
+        // Tìm đối tượng thực thể trong cơ sở dữ liệu
+        Admin adminEntity = userRepository.findById(id)
+                .orElseThrow(() -> new NoResultException("Không tìm thấy admin với ID: " + id));
+
+        // Xóa đối tượng thực thể khỏi cơ sở dữ liệu
+        userRepository.delete(adminEntity);
+    }
+
+
 
     @Override
     public AdminDTO getAccountByAdmin(String id){

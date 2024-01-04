@@ -3,6 +3,7 @@ package com.example.ecommerce_be.controller;
 import com.example.ecommerce_be.base.BaseResponse;
 import com.example.ecommerce_be.constants.StatusCode;
 import com.example.ecommerce_be.dto.AdminDTO;
+import com.example.ecommerce_be.dto.BillDTO;
 import com.example.ecommerce_be.entity.Admin;
 import com.example.ecommerce_be.jwt.config.UserAuthProvider;
 import com.example.ecommerce_be.dto.CredentialsDto;
@@ -78,7 +79,25 @@ public class Admin_Controller {
         throw new AppException("Invalid authorization header", HttpStatus.BAD_REQUEST);
     }
 
+    @PutMapping("/updateAdmin")
+    @ResponseBody
+    public ResponseEntity<BaseResponse> updateAdmin(@RequestBody AdminDTO adminDTO) {
+        // Ensure that ID and enable are provided in the DTO
+        if (adminDTO.getId() == null || adminDTO.getEnable() == null) {
+            return ResponseEntity.badRequest()
+                    .body(new BaseResponse(null, "Admin ID and enable status are required for updating", StatusCode.ERROR));
+        }
 
+        AdminDTO updatedAdmin = userService.updateAdmin(adminDTO);
+        return ResponseEntity.ok(new BaseResponse(updatedAdmin, "Update successful", StatusCode.SUCCESS));
+    }
+
+    @DeleteMapping("/deleteAdmin/{id}")
+    ResponseEntity deleteAdmin(@PathVariable(name = "id") Long id){
+        userService.deleteAdminById(id);
+        //return new ResponseEntity<>(HttpStatus.OK);
+        return  ResponseEntity.ok(new BaseResponse(null,"Xóa sản phẩm thành công",StatusCode.SUCCESS));
+    }
     @PostMapping("/register")
     public ResponseEntity<AdminDTO> login(@RequestBody SignUpDto signUpDto) {
 //    if (StringUtils.isBlank(new String(signUpDto.password()))) {

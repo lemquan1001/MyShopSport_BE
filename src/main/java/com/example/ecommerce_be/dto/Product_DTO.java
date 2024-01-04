@@ -17,10 +17,14 @@ public class Product_DTO implements Serializable {
     private String productCode;
     private String productName;
     private String description;
-    private String brand;
+//    private String brand;
     private String image;
     private Long status;
     private Long price;
     //@ManyToOne
     private CategoryDTO category;
+
+    private BrandDTO brand;
+
+
 }

@@ -27,8 +27,8 @@ public class Product_T {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private String brand;
+//    @Column(nullable = false)
+//    private String brand;
     private String image;
     @Column(nullable = false)
     private Long status;
@@ -40,6 +40,10 @@ public class Product_T {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
     public Category getCategory() {
         return category;

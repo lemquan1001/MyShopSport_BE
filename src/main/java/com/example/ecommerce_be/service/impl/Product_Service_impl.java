@@ -63,7 +63,9 @@ public class Product_Service_impl implements Product_Service {
     @Override
     @Transactional
     public Product_DTO addNewProduct(Product_DTO productDTO) {
-        Product_T saveProduct = productMapper.toEntity(productDTO);
+//        Product_T saveProduct = productMapper.toEntity(productDTO);
+//        productRepository.save(saveProduct);
+        Product_T saveProduct = new ModelMapper().map(productDTO,Product_T.class);
         productRepository.save(saveProduct);
 
         // Tự động đổ dữ liệu từ Product sang ProductDetail
@@ -101,6 +103,19 @@ public class Product_Service_impl implements Product_Service {
         mapper.createTypeMap(Product_DTO.class,Product_T.class)
                 .setProvider(p -> productRepository.findById(productDTO.getId()).orElseThrow(NoResultException::new));
         Product_T product = mapper.map(productDTO, Product_T.class);
+
+
+        product.setProductCode(productDTO.getProductCode());
+        product.setProductName(productDTO.getProductName());
+        product.setDescription(productDTO.getDescription());
+//        product.setBrand(productDTO.getBrand());
+        product.setBrand(product.getBrand());
+        product.setImage(productDTO.getImage());
+        product.setStatus(productDTO.getStatus());
+        product.setPrice(productDTO.getPrice());
+        product.setCategory(product.getCategory());
+
+        productRepository.save(product);
 
         // Lưu lại thông tin sản phẩm
         Product_T updatedProduct = productRepository.save(product);
