@@ -18,6 +18,10 @@ public class Brand {
 
     @Column(nullable = false, unique = true)
     private String brandName;
+    @Column(nullable = false, unique = true)
+    private String brandCode;
+    @Column(nullable = false, unique = true)
+    private String description;
 
 
     @OneToMany(mappedBy = "brand")
