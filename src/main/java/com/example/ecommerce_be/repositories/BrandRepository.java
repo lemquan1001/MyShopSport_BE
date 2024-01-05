@@ -11,4 +11,7 @@ import java.util.List;
 public interface BrandRepository extends JpaRepository<Brand,Long> {
     @Query(value = "select b.* from brands b ", nativeQuery = true)
     List<Brand> getAllBrand();
+
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM Brand s WHERE s.brandName = :brandName")
+    boolean existsByBrand(String brandName);
 }
