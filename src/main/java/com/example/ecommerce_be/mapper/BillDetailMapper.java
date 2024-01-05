@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring",uses = {CategoryMapper.class})
+@Mapper(componentModel = "spring",uses = {BillDetailMapper.class})
 public interface BillDetailMapper {
     @Mapping(target = "productDetailId",source = "productDetailId")
     @Mapping(target = "billID",source = "billID")
