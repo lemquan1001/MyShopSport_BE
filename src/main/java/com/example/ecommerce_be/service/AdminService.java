@@ -5,6 +5,8 @@ import com.example.ecommerce_be.dto.AdminDTO;
 import com.example.ecommerce_be.dto.CredentialsDto;
 import com.example.ecommerce_be.dto.SignUpDto;
 
+import java.util.List;
+
 public interface AdminService {
     public AdminDTO login(CredentialsDto credentialsDto);
 
@@ -15,4 +17,5 @@ public interface AdminService {
     public AdminDTO updateAdmin(AdminDTO adminDTO);
     public void deleteAdminById(Long id);
     public AdminDTO getAccountByAdmin(String id);
+    public List<AdminDTO> getListAdmin();
 }

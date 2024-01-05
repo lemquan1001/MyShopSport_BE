@@ -4,6 +4,7 @@ import com.example.ecommerce_be.entity.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AdminRepository extends JpaRepository<Admin,Long> {
@@ -11,4 +12,7 @@ public interface AdminRepository extends JpaRepository<Admin,Long> {
 
     @Query(value ="SELECT p.* from admins p where p.user_name = ?1 ", nativeQuery = true)
     Optional<Admin> getAccountByUser(String id);
+
+    @Query(value = "select b.* from admins b ", nativeQuery = true)
+    List<Admin> getAllAdmin();
 }

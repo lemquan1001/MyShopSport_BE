@@ -26,7 +26,7 @@ public class SecurityConfig {
             .authorizeRequests(authorizeRequests ->
                     authorizeRequests
                             .antMatchers(HttpMethod.POST, "/login", "/register","/forgot-password").permitAll()
-                            .antMatchers("/confirm","/getAccountByAdmin/**","/updateAdmin","/deleteAdmin/**","/change-password").permitAll()
+                            .antMatchers("/confirm","/getAccountByAdmin/**","/updateAdmin","/deleteAdmin/**","/change-password","/getAllAdmin").permitAll()
                             .antMatchers("/api/**").permitAll()
 //                            .antMatchers("/api/productT/**").authenticated()
                             .antMatchers("/logout").authenticated()
