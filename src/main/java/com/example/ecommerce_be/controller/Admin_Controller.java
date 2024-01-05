@@ -47,6 +47,10 @@ public class Admin_Controller {
 //        return ResponseEntity.ok(user);
 //    }
 
+    @GetMapping("/getAllAdmin")
+    public ResponseEntity getAllAdmin() {
+        return ResponseEntity.ok(new BaseResponse(userService.getListAdmin(),"Thành công", StatusCode.SUCCESS));
+    }
     @PostMapping("/login")
     public ResponseEntity<AdminDTO> login(@RequestBody CredentialsDto credentialsDto) {
         AdminDTO user = userService.login(credentialsDto);

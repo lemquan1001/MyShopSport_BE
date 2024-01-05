@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.nio.CharBuffer;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,12 @@ public class AdminService_Impl implements AdminService {
     private final AdminMapper userMapper;
 
     private final EmailSender emailSender;
+
+    @Override
+    public List<AdminDTO> getListAdmin() {
+        return userMapper.toListDto(userRepository.getAllAdmin());
+    }
+
 
     public AdminDTO login(CredentialsDto credentialsDto) {
         // Kiểm tra login không chứa khoảng trắng
