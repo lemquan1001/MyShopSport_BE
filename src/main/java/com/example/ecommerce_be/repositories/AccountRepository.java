@@ -15,6 +15,8 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query(value = "select a.* from account a WHERE a.user = ?1", nativeQuery = true)
     Account findByUsername(String user);
+    @Query(value = "select a.* from account a WHERE a.email = ?1", nativeQuery = true)
+    Account findByEmail(String email);
     @Query(value ="SELECT p.* from account p where p.user = ?1 ", nativeQuery = true)
     Optional<Account> getAccountByUser(String id);
 
