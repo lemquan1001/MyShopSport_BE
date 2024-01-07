@@ -53,9 +53,9 @@ public class AccountService_impl implements AccountService {
     @Override
     @Transactional
     public AccountDTO addNewAccount(AccountDTO accountDTO) {
-        String username = accountDTO.getUser();
-        if (accountRepository.findByUsername(username) != null) {
-            throw new UserAlreadyExistException("Username already exists");
+        String email = accountDTO.getEmail();
+        if (accountRepository.findByEmail(email) != null) {
+            throw new UserAlreadyExistException("Email already exists");
         }
         Account account = accoutMapper.toEntity(accountDTO);
         account.setUser(accountDTO.getUser());
